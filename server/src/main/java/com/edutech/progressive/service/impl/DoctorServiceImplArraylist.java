@@ -1,0 +1,40 @@
+package com.edutech.progressive.service.impl;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import com.edutech.progressive.entity.Doctor;
+import com.edutech.progressive.service.DoctorService;
+
+public class DoctorServiceImplArraylist implements DoctorService {
+    List<Doctor> doctorList = new ArrayList<Doctor>();
+
+    public void emptyArrayList(){
+        // does nothing
+    }
+
+    @Override
+    public List<Doctor> getAllDoctors() {
+        return doctorList;
+    }
+
+
+    @Override
+    public Integer addDoctor(Doctor doctor) {
+        for(Doctor d : doctorList){
+            if(d.getDoctorId() == doctor.getDoctorId()){
+                return 1;
+            }
+        }
+        doctorList.add(doctor);
+        return 1; // not sure what to return
+    }
+
+    @Override
+    public List<Doctor> getDoctorSortedByExperience() {
+        Collections.sort(doctorList);
+        return doctorList; // need to be sorted
+    }
+
+}
