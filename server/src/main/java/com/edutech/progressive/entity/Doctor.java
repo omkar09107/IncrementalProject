@@ -1,9 +1,16 @@
 package com.edutech.progressive.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Doctor implements Comparable<Doctor> {
@@ -15,6 +22,20 @@ public class Doctor implements Comparable<Doctor> {
     private String contactNumber;
     private String email;
     private int yearsOfExperience;
+
+    @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
+    @JsonIgnore // avoid infinite recursion / large payloads in JSON
+    private List<Clinic> clinics = new ArrayList<>();
+
+    public Doctor(int doctorId, String fullName, String specialty, String contactNumber, String email, int yearsOfExperience, List<Clinic> clinics) {
+        this.doctorId = doctorId;
+        this.fullName = fullName;
+        this.specialty = specialty;
+        this.contactNumber = contactNumber;
+        this.email = email;
+        this.yearsOfExperience = yearsOfExperience;
+        this.clinics = clinics;
+    }
 
     public Doctor() {
     }
@@ -81,6 +102,14 @@ public class Doctor implements Comparable<Doctor> {
     @Override
     public int compareTo(Doctor o) {
         return Integer.compare(this.getYearsOfExperience(), o.getYearsOfExperience());
+    }
+
+    public List<Clinic> getClinics() {
+        return clinics;
+    }
+
+    public void setClinics(List<Clinic> clinics) {
+        this.clinics = clinics;
     }
 
    
